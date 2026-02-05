@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer Me - United States</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary)">
+                        <path
+                            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    </svg>
+                    <span>Volunteer<span style="color:var(--primary)">Me</span></span>
+                </div>
+                <div class="nav-links">
+                    <button class="btn btn-outline" onclick="window.router.navigate('nonprofit')"
+                        style="border:none; color:var(--text-dim)">For Non-Profits</button>
+                    <button class="btn btn-outline" onclick="window.router.navigate('home')" style="border:none;">Find
+                        Opportunities</button>
+                    <button class="btn btn-primary" onclick="window.router.navigate('dashboard')">My Dashboard</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- VIEW: HOME -->
+    <div id="view-home" class="view-section active">
+        <section class="hero">
+            <div class="container">
+                <h1>Find your purpose in the <span style="color:var(--secondary)">United States</span>.</h1>
+                <p>Connect with local charities and non-profits. Make a difference in your community today.</p>
+
+                <div id="filters" class="filters">
+                    <!-- Filters rendered by JS -->
+                </div>
+            </div>
+        </section>
+
+        <main class="container">
+            <div id="opp-grid" class="opp-grid">
+                <!-- Cards rendered by JS -->
+            </div>
+            <div style="text-align:center; margin-bottom:4rem;">
+                <button class="btn btn-outline" onclick="window.loadMoreEvents()">Load More Opportunities</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- VIEW: DASHBOARD -->
+    <div id="view-dashboard" class="view-section">
+        <div class="container" style="padding-top: 2rem;">
+            <div class="dashboard-header">
+                <div>
+                    <h1 style="font-size:2rem; margin-bottom:0.5rem">Welcome Back, <span id="user-welcome-name"
+                            style="color:var(--primary)">Volunteer</span>!</h1>
+                    <div id="user-badges" class="badges-grid">
+                        <!-- Badges -->
+                    </div>
+                </div>
+                <div style="display:flex; gap:2rem;">
+                    <div class="stat-box">
+                        <div class="stat-value" id="user-hours">0</div>
+                        <div class="stat-label">Hours Given</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="user-impact">0</div>
+                        <div class="stat-label">Events</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Editor -->
+            <div
+                style="background:white; border-radius:1rem; padding:1.5rem; margin-bottom:2rem; border:1px solid #e2e8f0;">
+                <h3 style="margin-bottom:1rem;">Edit Your Profile</h3>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem; margin-bottom:1rem;">
+                    <div>
+                        <label class="form-label">Name</label>
+                        <input type="text" id="profile-name" class="form-input">
+                    </div>
+                    <div>
+                        <label class="form-label">My Location (City, State)</label>
+                        <input type="text" id="profile-location" class="form-input" placeholder="e.g. Austin, TX">
+                    </div>
+                </div>
+                <div style="margin-bottom:1rem;">
+                    <label class="form-label">My Skills (comma separated)</label>
+                    <input type="text" id="profile-skills" class="form-input"
+                        placeholder="e.g. Teaching, Coding, Lifting">
+                </div>
+                <button class="btn btn-primary" onclick="window.saveProfile()">Save Profile</button>
+            </div>
+
+            <h2 style="margin-bottom:1rem">Your Upcoming Shifts</h2>
+            <div id="dashboard-grid" class="opp-grid">
+                <!-- User Events -->
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW: NON-PROFIT -->
+    <div id="view-nonprofit" class="view-section">
+        <div class="container" style="padding-top: 3rem; padding-bottom: 3rem;">
+            <div style="text-align:center; margin-bottom:2rem;">
+                <h1 style="font-size:2.5rem; margin-bottom:0.5rem; color:#1e293b;">Post an Opportunity</h1>
+                <p style="color:var(--text-dim);">Reaching thousands of volunteers across the country.</p>
+            </div>
+
+            <div class="post-card">
+                <form id="post-form" onsubmit="event.preventDefault(); window.createPost();">
+                    <div class="form-group">
+                        <label class="form-label">Upload Cover Image</label>
+                        <input type="file" id="post-image" class="form-input" accept="image/*">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Organization Name</label>
+                        <input type="text" id="post-org" class="form-input" placeholder="e.g. Austin Food Bank"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Event Title</label>
+                        <input type="text" id="post-title" class="form-input" placeholder="e.g. Weekend Box Packing"
+                            required>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem;">
+                        <div class="form-group">
+                            <label class="form-label">Category</label>
+                            <select id="post-category" class="form-select">
+                                <option>Community</option>
+                                <option>Hunger Relief</option>
+                                <option>Animals</option>
+                                <option>Education</option>
+                                <option>Housing</option>
+                                <option>Environment</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Location</label>
+                            <input type="text" id="post-location" class="form-input" placeholder="City/Address"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Date & Time</label>
+                        <input type="text" id="post-date" class="form-input" placeholder="e.g. Sat, Oct 12 @ 9am"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea id="post-desc" class="form-textarea"
+                            placeholder="Describe what volunteers will be doing..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Impact Statement</label>
+                        <input type="text" id="post-impact" class="form-input" placeholder="e.g. Helps 50 families"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Total Spots Needed</label>
+                        <input type="number" id="post-spots" class="form-input" value="10" min="1" max="100">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width:100%; padding: 1rem;">Publish
+                        Opportunity</button>
+                    <p style="text-align:center; font-size:0.8rem; color:#94a3b8; margin-top:1rem;">
+                        * This is a demo. Post will be live for this session only.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Details Modal -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div>
+                    <h2 id="modal-title">Title</h2>
+                    <div id="modal-org" style="color:var(--primary); font-weight:600; margin-top:0.25rem;">Org</div>
+                </div>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-info" style="margin-bottom:1.5rem">
+                    <p id="modal-desc" style="color:var(--text-dim); line-height:1.6; margin-bottom:1rem;">
+                        Description...</p>
+
+                    <div id="modal-impact-box"
+                        style="background:#f0f9ff; padding:1rem; border-radius:8px; border-left:4px solid var(--secondary); margin-bottom:1rem;">
+                        <strong>Impact:</strong> <span id="modal-impact">...</span>
+                    </div>
+
+                    <div style="margin-bottom:0.5rem">
+                        <div
+                            style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:0.25rem;">
+                            <span>Spots Remaining</span>
+                            <span id="modal-spots-text">5 / 10</span>
+                        </div>
+                        <div class="progress-container">
+                            <div id="modal-progress" class="progress-bar" style="width: 50%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sign Up Form -->
+                <div id="signup-form" style="display:none; border-top:1px solid #e2e8f0; padding-top:1.5rem;">
+                    <h3 style="margin-bottom:1rem; font-size:1.1rem;">Confirm Registration</h3>
+                    <input type="text" id="input-name" placeholder="Full Name"
+                        style="width:100%; padding:0.75rem; margin-bottom:0.5rem; border:1px solid #cbd5e1; border-radius:6px; box-sizing:border-box;">
+                    <input type="email" id="input-email" placeholder="Email Address"
+                        style="width:100%; padding:0.75rem; margin-bottom:1rem; border:1px solid #cbd5e1; border-radius:6px; box-sizing:border-box;">
+                    <button class="btn btn-primary" style="width:100%" onclick="confirmSignUp()">Complete Sign
+                        Up</button>
+                </div>
+
+                <div id="modal-actions" style="display:flex; gap:1rem; margin-top:1.5rem;">
+                    <button class="btn btn-primary" onclick="showSignUpForm()" style="flex:1">Sign Up Now</button>
+                    <button class="btn btn-outline" onclick="closeModal()" style="flex:1">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/user.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
